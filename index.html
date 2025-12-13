@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kalendar Kuda 2025</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        
+        <div class="app-header">
+            <div class="brand">
+                <img src="assets/kuda.png" class="app-logo" alt="Logo">
+                <h2>KALENDAR 2025</h2>
+            </div>
+            <button onclick="goToToday()" class="today-btn">HARI INI</button>
+        </div>
+
+        <div class="calendar-card">
+            
+            <div class="month-control">
+                <button id="prevBtn" class="nav-btn">&#10094;</button>
+                <div class="header-text-group">
+                    <div class="header-main-bar">
+                        <h1 class="month-name" id="display-month">JANUARI 2025</h1>
+                    </div>
+                    <div class="header-sub-bar">
+                        <span class="hijri-badge" id="display-hijri">REJAB - SYAABAN 1446H</span>
+                    </div>
+                </div>
+                <button id="nextBtn" class="nav-btn">&#10095;</button>
+            </div>
+
+            <div class="days-header">
+                <div class="day-name sunday">AHAD</div>
+                <div class="day-name">ISNIN</div>
+                <div class="day-name">SEL</div>
+                <div class="day-name">RAB</div>
+                <div class="day-name">KHA</div>
+                <div class="day-name">JUM</div>
+                <div class="day-name saturday">SABTU</div>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid">
+                </div>
+        </div>
+
+        <div class="legend">
+            <span class="legend-item"><span class="dot-today"></span> Hari Ini</span>
+            <span class="legend-item"><span class="dot-yellow"></span> Cuti Sekolah</span>
+            <span class="legend-item"><span class="dot-red"></span> Cuti Umum</span>
+        </div>
+
+        <div class="notes-card">
+            <h3>PERISTIWA BULAN INI</h3>
+            <ul id="holiday-list" class="holiday-list"></ul>
+        </div>
+
+        <div class="footer">
+            <p>Versi Kuda Digital 2025</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -8,14 +8,14 @@ const fixedHolidays = {
     "3-15": "Hari Perisytiharan Melaka Bandaraya Bersejarah",
     "3-26": "Hari Keputeraan Sultan Terengganu",
     "4-1": "Hari Pekerja",
-    "4-17": "Hari Keputeraan Raja Perlis", // Perlis Tetap 17 Mei
+    "4-17": "Hari Keputeraan Raja Perlis",
     "4-30": "Pesta Kaamatan",
     "4-31": "Pesta Kaamatan (Hari Kedua)",
     "5-1": "Hari Gawai",
     "5-2": "Hari Gawai (Hari Kedua)",
-    "5-21": "Hari Keputeraan Sultan Kedah", // Kedah Tetap 21 Jun
+    "5-21": "Hari Keputeraan Sultan Kedah",
     "6-7": "Hari Warisan Dunia Georgetown",
-    "6-30": "Hari Keputeraan Sultan Pahang", // Pahang Tetap 30 Julai
+    "6-30": "Hari Keputeraan Sultan Pahang",
     "7-31": "Hari Kebangsaan",
     "8-16": "Hari Malaysia",
     "10-11": "Hari Keputeraan Sultan Kelantan",
@@ -23,27 +23,26 @@ const fixedHolidays = {
     "11-25": "Hari Krismas"
 };
 
-// --- 2. DATA CUTI BERGERAK (2025 Sahaja) ---
+// --- 2. DATA CUTI BERGERAK (TAHUN BARU CINA & LAIN-LAIN) ---
+// Saya dah tolong senaraikan CNY sampai 2030!
 const dynamicHolidays = {
     "2025": {
-        "0-27": "Israk Mikraj",
-        "0-29": "Tahun Baru Cina",
-        "0-30": "TBC Hari Kedua",
-        "1-11": "Thaipusam",
-        "2-2": "Awal Ramadan (Anggaran)",
-        "2-17": "Nuzul Al-Quran",
-        "2-31": "Hari Raya Aidilfitri",
-        "3-1": "Aidilfitri Hari Kedua",
-        "4-13": "Hari Wesak",
-        "5-2": "Keputeraan YDPA Agong",
-        "5-6": "Hari Raya Aidiladha",
-        "5-27": "Awal Muharram",
-        "8-9": "Maulidur Rasul",
-        "9-20": "Deepavali"
-    }
+        "0-29": "Tahun Baru Cina", "0-30": "TBC Hari Kedua",
+        "0-27": "Israk Mikraj", "1-11": "Thaipusam", "2-31": "Hari Raya Aidilfitri", 
+        "3-1": "Aidilfitri Hari Kedua", "4-13": "Hari Wesak", "5-2": "Keputeraan YDPA Agong", 
+        "5-6": "Hari Raya Aidiladha", "5-27": "Awal Muharram", "8-9": "Maulidur Rasul", "9-20": "Deepavali"
+    },
+    "2026": {
+        "1-17": "Tahun Baru Cina", "1-18": "TBC Hari Kedua" 
+        // Anda boleh tambah Raya 2026 nanti bila tarikh confirm
+    },
+    "2027": { "1-6": "Tahun Baru Cina", "1-7": "TBC Hari Kedua" },
+    "2028": { "0-26": "Tahun Baru Cina", "0-27": "TBC Hari Kedua" },
+    "2029": { "1-13": "Tahun Baru Cina", "1-14": "TBC Hari Kedua" },
+    "2030": { "1-3": "Tahun Baru Cina", "1-4": "TBC Hari Kedua" }
 };
 
-// --- 3. DATA GAMBAR CUTI (Sama utk Semua Tahun) ---
+// --- 3. DATA GAMBAR (Tetap Ikut Tarikh) ---
 const holidayImages = {
     "0-1": "newyear.png",
     "0-14": "n9.png",
@@ -68,7 +67,15 @@ const holidayImages = {
     "11-25": "christmas.png"
 };
 
-// --- 4. DATA CUTI SEKOLAH (2025) ---
+// --- 4. DATA GAMBAR PINTAR (Ikut NAMA CUTI) ---
+// Ini function baru! Kalau nama cuti ni muncul, dia pakai gambar ni tak kisah tarikh bila.
+const dynamicImageMap = {
+    "Tahun Baru Cina": "cny.png", // Pastikan ada cny.png
+    "Hari Raya Aidilfitri": "raya.png", // Kalau ada gambar raya
+    "Deepavali": "deepavali.png"
+};
+
+// --- 5. DATA CUTI SEKOLAH (2025) ---
 const schoolHolidayData = {
     "2025": [
         { m: 0, start: 18, end: 31 }, 
@@ -85,7 +92,6 @@ const monthNames = [
     "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"
 ];
 
-// Setup Auto Hijri
 const hijriFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura', {
     day: 'numeric', month: 'long', year: 'numeric'
 });
@@ -95,21 +101,17 @@ const todayDate = new Date();
 let currentMonth = todayDate.getMonth();
 let currentYear = todayDate.getFullYear();
 
-// --- FUNGSI POPUP ---
+// --- POPUP ---
 function showPopup(title, msg) {
     const overlay = document.getElementById('custom-popup');
     document.getElementById('popup-title').innerText = title;
     document.getElementById('popup-message').innerText = msg;
     overlay.classList.add('active');
 }
-function closePopup() {
-    document.getElementById('custom-popup').classList.remove('active');
-}
-document.getElementById('custom-popup').addEventListener('click', (e) => {
-    if (e.target.id === 'custom-popup') closePopup();
-});
+function closePopup() { document.getElementById('custom-popup').classList.remove('active'); }
+document.getElementById('custom-popup').addEventListener('click', (e) => { if (e.target.id === 'custom-popup') closePopup(); });
 
-// --- FUNGSI UTAMA ---
+// --- INIT ---
 function init() {
     renderCalendar(currentMonth, currentYear);
     document.getElementById('prevBtn').addEventListener('click', () => changeMonth(-1));
@@ -125,11 +127,8 @@ function goToToday() {
 
 function changeMonth(step) {
     currentMonth += step;
-    if (currentMonth > 11) {
-        currentMonth = 0; currentYear++;
-    } else if (currentMonth < 0) {
-        currentMonth = 11; currentYear--;
-    }
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; } 
+    else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
     renderCalendar(currentMonth, currentYear);
 }
 
@@ -175,13 +174,11 @@ function renderCalendar(month, year) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let activeHolidays = [];
 
-    // Padding
     for (let i = 0; i < firstDayIndex; i++) {
         const padding = document.createElement('div');
         grid.appendChild(padding);
     }
 
-    // Loop Hari
     for (let d = 1; d <= daysInMonth; d++) {
         const box = document.createElement('div');
         box.className = 'date-box';
@@ -207,12 +204,21 @@ function renderCalendar(month, year) {
             if(!isPublicHoliday) box.classList.add('is-holiday');
         }
 
-        // HTML Content
         let html = `<span class="date-number">${d}</span>`;
         if (isPublicHoliday) html += `<div class="holiday-dot"></div>`;
         
-        // Image Logic
-        const specialImage = holidayImages[`${month}-${d}`];
+        // --- LOGIC GAMBAR INTELLIGENT ---
+        let specialImage = null;
+
+        // 1. Check kalau tarikh tu ada dalam list fixed (Macam Merdeka)
+        if (holidayImages[`${month}-${d}`]) {
+            specialImage = holidayImages[`${month}-${d}`];
+        } 
+        // 2. Check kalau NAMA cuti tu ada dalam map (Utk CNY, Raya, Deepavali)
+        else if (holidayName && dynamicImageMap[holidayName]) {
+            specialImage = dynamicImageMap[holidayName];
+        }
+
         if (specialImage) {
             html += `<img src="assets/${specialImage}" class="horse-icon-grid" alt="Holiday">`;
         } else if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -221,7 +227,6 @@ function renderCalendar(month, year) {
 
         box.innerHTML = html;
         
-        // Popup Interaction
         if (box.classList.contains('is-today')) {
             box.onclick = () => showPopup(`📅 Hari Ini`, `${d} ${monthNames[month]} ${year}\nSemoga hari anda ceria!`);
         } else if (isPublicHoliday) {
@@ -233,10 +238,10 @@ function renderCalendar(month, year) {
         grid.appendChild(box);
     }
 
-    // Notes List
     if (activeHolidays.length === 0) {
         let msg = "TIADA CUTI UMUM BULAN INI.";
-        if (year !== 2025) msg = "CUTI BERGERAK TIDAK DIPAPARKAN.";
+        // Kalau tahun tu takde dalam dynamicHolidays
+        if (!dynamicHolidays[year]) msg = "DATA TAHUN INI BELUM DIKEMASKINI.";
         holidayList.innerHTML = `<li style="padding:15px; color:#555; text-align:center;">${msg}</li>`;
     } else {
         activeHolidays.forEach(h => {

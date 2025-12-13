@@ -8,23 +8,14 @@ const fixedHolidays = {
     "3-15": "Hari Perisytiharan Melaka Bandaraya Bersejarah",
     "3-26": "Hari Keputeraan Sultan Terengganu",
     "4-1": "Hari Pekerja",
-    
-    // PERLIS (17 MEI)
-    "4-17": "Hari Keputeraan Raja Perlis",
-    
+    "4-17": "Hari Keputeraan Raja Perlis", // Perlis Tetap 17 Mei
     "4-30": "Pesta Kaamatan",
     "4-31": "Pesta Kaamatan (Hari Kedua)",
     "5-1": "Hari Gawai",
     "5-2": "Hari Gawai (Hari Kedua)",
-    
-    // KEDAH (TETAP 21 JUN - ANGGARAN UTK MEMUDAHKAN KOD)
-    "5-21": "Hari Keputeraan Sultan Kedah",
-    
+    "5-21": "Hari Keputeraan Sultan Kedah", // Kedah Tetap 21 Jun
     "6-7": "Hari Warisan Dunia Georgetown",
-    
-    // PAHANG (TETAP 30 JULAI)
-    "6-30": "Hari Keputeraan Sultan Pahang",
-
+    "6-30": "Hari Keputeraan Sultan Pahang", // Pahang Tetap 30 Julai
     "7-31": "Hari Kebangsaan",
     "8-16": "Hari Malaysia",
     "10-11": "Hari Keputeraan Sultan Kelantan",
@@ -32,7 +23,7 @@ const fixedHolidays = {
     "11-25": "Hari Krismas"
 };
 
-// --- 2. DATA CUTI BERGERAK (Hanya untuk 2025) ---
+// --- 2. DATA CUTI BERGERAK (2025 Sahaja) ---
 const dynamicHolidays = {
     "2025": {
         "0-27": "Israk Mikraj",
@@ -52,7 +43,7 @@ const dynamicHolidays = {
     }
 };
 
-// --- 3. DATA GAMBAR CUTI (Ikon Besar di Tengah) ---
+// --- 3. DATA GAMBAR CUTI (Sama utk Semua Tahun) ---
 const holidayImages = {
     "0-1": "newyear.png",
     "0-14": "n9.png",
@@ -62,23 +53,14 @@ const holidayImages = {
     "3-15": "melaka.png",
     "3-26": "terengganu.png",
     "4-1": "labour.png",
-    
-    // PERLIS
     "4-17": "perlis.png",
-
     "4-30": "kaamatan.png",
     "4-31": "kaamatan.png",
     "5-1": "gawai.png",
     "5-2": "gawai.png",
-    
-    // KEDAH
     "5-21": "kedah.png",
-    
     "6-7": "penang.png",
-    
-    // PAHANG
     "6-30": "pahang.png", 
-
     "7-31": "merdeka.png",
     "8-16": "malaysia.png",
     "10-11": "kelantan.png",
@@ -86,7 +68,7 @@ const holidayImages = {
     "11-25": "christmas.png"
 };
 
-// --- 4. DATA CUTI SEKOLAH (2025 Sahaja) ---
+// --- 4. DATA CUTI SEKOLAH (2025) ---
 const schoolHolidayData = {
     "2025": [
         { m: 0, start: 18, end: 31 }, 
@@ -103,10 +85,9 @@ const monthNames = [
     "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"
 ];
 
+// Setup Auto Hijri
 const hijriFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+    day: 'numeric', month: 'long', year: 'numeric'
 });
 
 // --- STATE ---
@@ -114,6 +95,21 @@ const todayDate = new Date();
 let currentMonth = todayDate.getMonth();
 let currentYear = todayDate.getFullYear();
 
+// --- FUNGSI POPUP ---
+function showPopup(title, msg) {
+    const overlay = document.getElementById('custom-popup');
+    document.getElementById('popup-title').innerText = title;
+    document.getElementById('popup-message').innerText = msg;
+    overlay.classList.add('active');
+}
+function closePopup() {
+    document.getElementById('custom-popup').classList.remove('active');
+}
+document.getElementById('custom-popup').addEventListener('click', (e) => {
+    if (e.target.id === 'custom-popup') closePopup();
+});
+
+// --- FUNGSI UTAMA ---
 function init() {
     renderCalendar(currentMonth, currentYear);
     document.getElementById('prevBtn').addEventListener('click', () => changeMonth(-1));
@@ -123,18 +119,16 @@ function init() {
 function goToToday() {
     const now = new Date();
     currentMonth = now.getMonth();
-    currentYear = now.getFullYear(); 
+    currentYear = now.getFullYear();
     renderCalendar(currentMonth, currentYear);
 }
 
 function changeMonth(step) {
     currentMonth += step;
     if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
+        currentMonth = 0; currentYear++;
     } else if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
+        currentMonth = 11; currentYear--;
     }
     renderCalendar(currentMonth, currentYear);
 }
@@ -160,9 +154,7 @@ function getHijriMonthName(month, year) {
         const hMonth = parts.find(p => p.type === 'month').value;
         const hYear = parts.find(p => p.type === 'year').value;
         return `${hMonth.toUpperCase()} ${hYear}`;
-    } catch (e) {
-        return "HIJRI"; 
-    }
+    } catch (e) { return "HIJRI"; }
 }
 
 function renderCalendar(month, year) {
@@ -173,11 +165,9 @@ function renderCalendar(month, year) {
     
     const now = new Date();
     
-    // Reset
     grid.innerHTML = '';
     holidayList.innerHTML = '';
     
-    // Header
     displayMonth.innerText = `${monthNames[month]} ${year}`;
     displayHijri.innerText = getHijriMonthName(month, year);
     
@@ -201,14 +191,11 @@ function renderCalendar(month, year) {
         const schoolHol = isSchoolHoliday(d, month, year);
         let isPublicHoliday = !!holidayName;
 
-        // Auto Detect Hari Ini
         if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
             box.classList.add('is-today');
         }
 
-        // Logic Warna
         if (schoolHol) box.classList.add('is-school-holiday');
-        
         if (isPublicHoliday) {
             box.classList.add('is-holiday');
             activeHolidays.push({ date: d, name: holidayName });
@@ -220,33 +207,33 @@ function renderCalendar(month, year) {
             if(!isPublicHoliday) box.classList.add('is-holiday');
         }
 
-        // HTML
+        // HTML Content
         let html = `<span class="date-number">${d}</span>`;
         if (isPublicHoliday) html += `<div class="holiday-dot"></div>`;
         
-        // Logic Gambar
+        // Image Logic
         const specialImage = holidayImages[`${month}-${d}`];
-        
         if (specialImage) {
             html += `<img src="assets/${specialImage}" class="horse-icon-grid" alt="Holiday">`;
-        } 
-        else if (dayOfWeek === 0 || dayOfWeek === 6) {
+        } else if (dayOfWeek === 0 || dayOfWeek === 6) {
             html += `<img src="assets/kuda.png" class="horse-icon-grid" alt="Race">`;
         }
 
         box.innerHTML = html;
         
-        // Klik
+        // Popup Interaction
         if (box.classList.contains('is-today')) {
-            box.onclick = () => alert(`Hari Ini: ${d} ${monthNames[month]} ${year}`);
+            box.onclick = () => showPopup(`📅 Hari Ini`, `${d} ${monthNames[month]} ${year}\nSemoga hari anda ceria!`);
         } else if (isPublicHoliday) {
-            box.onclick = () => alert(`Cuti: ${holidayName}`);
+            box.onclick = () => showPopup(`🎉 Cuti Umum`, `${holidayName}\n(${d} ${monthNames[month]})`);
+        } else if (schoolHol) {
+            box.onclick = () => showPopup(`🏫 Cuti Sekolah`, `Tarikh ini jatuh dalam musim cuti sekolah.`);
         }
 
         grid.appendChild(box);
     }
 
-    // Notes
+    // Notes List
     if (activeHolidays.length === 0) {
         let msg = "TIADA CUTI UMUM BULAN INI.";
         if (year !== 2025) msg = "CUTI BERGERAK TIDAK DIPAPARKAN.";

@@ -35,7 +35,6 @@ const fixedHolidays = {
 };
 
 // B. CUTI BERGERAK (2025 - 2030)
-// Format Key: "Bulan-Hari" (0=Jan, 1=Feb, 2=Mac, 3=Apr, 4=Mei, 5=Jun...)
 const dynamicHolidays = {
     "2025": {
         "0-29": "Tahun Baru Cina", "0-30": "TBC Hari Kedua",
@@ -54,10 +53,7 @@ const dynamicHolidays = {
         "2-6": "Nuzul Al-Quran", 
         "2-21": "Hari Raya Aidilfitri", "2-22": "Aidilfitri Hari Kedua",
         "4-27": "Hari Raya Aidiladha", "4-31": "Hari Wesak",
-        
-        // UPDATE: Awal Muharram 17 Jun (Bulan 5 = Jun)
-        "5-17": "Awal Muharram", 
-        
+        "5-17": "Awal Muharram", // 17 Jun (Ikut permintaan)
         "5-1": "Keputeraan YDPA Agong",
         "7-25": "Maulidur Rasul", 
         "10-8": "Deepavali", "0-17": "Israk Mikraj", "1-1": "Thaipusam"
@@ -309,7 +305,8 @@ function renderCalendar(month, year) {
         if (specialImage) {
             html += `<img src="assets/${specialImage}" class="horse-icon-grid" alt="Holiday">`;
         } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-            html += `<img src="assets/kuda.png" class="horse-icon-grid" alt="Race">`;
+            // TUKAR GAMBAR KUDA KE BUNGARAYA
+            html += `<img src="assets/bungaraya.png" class="horse-icon-grid" alt="Bunga Raya">`;
         }
 
         box.innerHTML = html;

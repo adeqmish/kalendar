@@ -1,10 +1,10 @@
 // =================================================================
 // 1. TETAPAN SISTEM
 // =================================================================
-let hijriAdjustment = -1; // -1: Malaysia (Biasanya), 0: Saudi
+let hijriAdjustment = -1; // -1: Malaysia, 0: Saudi
 
 // =================================================================
-// 2. DATA NAMA BULAN ISLAM (MANUAL FIX UNTUK PHONE)
+// 2. DATA NAMA BULAN ISLAM
 // =================================================================
 const hijriFullNames = [
     "MUHARRAM", "SAFAR", "RABIULAWAL", "RABIULAKHIR",
@@ -22,7 +22,7 @@ const hijriShortNames = [
 // 3. DATA CUTI
 // =================================================================
 
-// A. CUTI TETAP (Berulang Setiap Tahun)
+// A. CUTI TETAP
 const fixedHolidays = {
     "0-1": "Tahun Baru", "0-14": "Keputeraan YDPB N9", "1-1": "Hari Wilayah",
     "2-4": "Pertabalan Sultan Trg", "2-23": "Sultan Johor", 
@@ -53,7 +53,7 @@ const dynamicHolidays = {
         "2-6": "Nuzul Al-Quran", 
         "2-21": "Hari Raya Aidilfitri", "2-22": "Aidilfitri Hari Kedua",
         "4-27": "Hari Raya Aidiladha", "4-31": "Hari Wesak",
-        "5-17": "Awal Muharram", // 17 Jun (Ikut permintaan)
+        "5-17": "Awal Muharram", 
         "5-1": "Keputeraan YDPA Agong",
         "7-25": "Maulidur Rasul", 
         "10-8": "Deepavali", "0-17": "Israk Mikraj", "1-1": "Thaipusam"
@@ -155,32 +155,28 @@ const todayDate = new Date();
 let currentMonth = todayDate.getMonth();
 let currentYear = todayDate.getFullYear();
 
-// FUNGSI HEADER: NAMA PENUH
+// FUNGSI HEADER
 function getHijriHeaderFull(month, year) {
     const dateStart = new Date(year, month, 1 + hijriAdjustment);
     const dateEnd = new Date(year, month, 28 + hijriAdjustment);
-    
     try {
         const mStartIdx = parseInt(hijriMonthNumFormatter.format(dateStart)) - 1;
         const mEndIdx = parseInt(hijriMonthNumFormatter.format(dateEnd)) - 1;
         const hYear = hijriYearFormatter.format(dateStart).replace('AH', '').trim();
-
         const nameStart = hijriFullNames[mStartIdx];
         const nameEnd = hijriFullNames[mEndIdx];
-
         if (nameStart === nameEnd) return `${nameStart} ${hYear}H`;
         return `${nameStart} - ${nameEnd} ${hYear}H`;
     } catch (e) { return "HIJRI"; }
 }
 
-// FUNGSI KOTAK TARIKH: NOMBOR + SHORTFORM
+// FUNGSI KOTAK TARIKH
 function getHijriDayText(day, month, year) {
     try {
         const date = new Date(year, month, day + hijriAdjustment);
         const hDay = hijriDayFormatter.format(date);
         const mIdx = parseInt(hijriMonthNumFormatter.format(date)) - 1;
         const shortName = hijriShortNames[mIdx];
-        
         return `${hDay} ${shortName}`; 
     } catch (e) { return ""; }
 }
@@ -235,7 +231,7 @@ function isSchoolHoliday(day, month, year) {
 }
 
 // =================================================================
-// 6. RENDER CALENDAR
+// 6. RENDER CALENDAR (UPDATED LOGIC)
 // =================================================================
 
 function renderCalendar(month, year) {
@@ -249,7 +245,6 @@ function renderCalendar(month, year) {
     grid.innerHTML = '';
     holidayList.innerHTML = '';
     
-    // Header Paparan
     displayMonth.innerText = `${monthNames[month]} ${year}`;
     displayHijri.innerText = getHijriHeaderFull(month, year);
     
@@ -257,13 +252,11 @@ function renderCalendar(month, year) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     let activeHolidays = [];
 
-    // Padding
     for (let i = 0; i < firstDayIndex; i++) {
         const padding = document.createElement('div');
         grid.appendChild(padding);
     }
 
-    // Loop Hari
     for (let d = 1; d <= daysInMonth; d++) {
         const box = document.createElement('div');
         box.className = 'date-box';
@@ -274,6 +267,22 @@ function renderCalendar(month, year) {
         const hijriText = getHijriDayText(d, month, year);
         let isPublicHoliday = !!holidayName;
 
+        // --- LOGIK BARU: TENTUKAN GAMBAR DULU ---
+        let specialImage = null;
+        if (holidayImages[`${month}-${d}`]) {
+            specialImage = holidayImages[`${month}-${d}`];
+        } else if (holidayName && dynamicImageMap[holidayName]) {
+            specialImage = dynamicImageMap[holidayName];
+        } else if (dayOfWeek === 0 || dayOfWeek === 6) {
+            specialImage = "bungaraya.png";
+        }
+
+        // Kalau ada gambar, tambah class 'has-image' pada kotak
+        if (specialImage) {
+            box.classList.add('has-image');
+        }
+
+        // --- TAMBAH CLASS LAIN ---
         if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
             box.classList.add('is-today');
         }
@@ -288,30 +297,24 @@ function renderCalendar(month, year) {
             if(!isPublicHoliday) box.classList.add('is-holiday');
         }
 
-        // HTML Content
+        // --- RENDER HTML ---
+        // Nombor Masihi
         let html = `<span class="date-number">${d}</span>`;      
+        
+        // Nombor Hijrah
         html += `<span class="hijri-number">${hijriText}</span>`; 
 
+        // Dot Cuti
         if (isPublicHoliday) html += `<div class="holiday-dot"></div>`;
         
-        // Image Logic
-        let specialImage = null;
-        if (holidayImages[`${month}-${d}`]) {
-            specialImage = holidayImages[`${month}-${d}`];
-        } else if (holidayName && dynamicImageMap[holidayName]) {
-            specialImage = dynamicImageMap[holidayName];
-        }
-
+        // Gambar
         if (specialImage) {
             html += `<img src="assets/${specialImage}" class="horse-icon-grid" alt="Holiday">`;
-        } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-            // TUKAR GAMBAR KUDA KE BUNGARAYA
-            html += `<img src="assets/bungaraya.png" class="horse-icon-grid" alt="Bunga Raya">`;
         }
 
         box.innerHTML = html;
         
-        // Click Logic
+        // --- CLICK EVENT ---
         if (box.classList.contains('is-today')) {
             box.onclick = () => showPopup(`📅 Hari Ini`, `${d} ${monthNames[month]} ${year}\n${hijriText} (Hijrah)\nSemoga ceria!`);
         } else if (isPublicHoliday) {

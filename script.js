@@ -35,63 +35,67 @@ const fixedHolidays = {
 };
 
 // B. CUTI BERGERAK (2025 - 2030)
-// Format Key: "Bulan-Hari" (Jan=0, Feb=1, Mac=2, ..., Dis=11)
+// Format Key: "Bulan-Hari" (0=Jan, 1=Feb, 2=Mac, 3=Apr, 4=Mei, 5=Jun...)
 const dynamicHolidays = {
     "2025": {
         "0-29": "Tahun Baru Cina", "0-30": "TBC Hari Kedua",
         "1-11": "Thaipusam", "0-27": "Israk Mikraj", 
         "2-2": "Awal Ramadan", 
-        "2-17": "Nuzul Al-Quran", // 17 Mac
+        "2-17": "Nuzul Al-Quran", 
         "2-31": "Hari Raya Aidilfitri", "3-1": "Aidilfitri Hari Kedua",
         "4-13": "Hari Wesak", "5-2": "Keputeraan YDPA Agong", 
         "5-6": "Hari Raya Aidiladha", 
-        "5-27": "Awal Muharram", // 27 Jun
-        "8-5": "Maulidur Rasul", // 5 Sept
+        "5-27": "Awal Muharram", 
+        "8-5": "Maulidur Rasul", 
         "9-20": "Deepavali"
     },
     "2026": {
         "1-17": "Tahun Baru Cina", "1-18": "TBC Hari Kedua",
-        "2-6": "Nuzul Al-Quran", // 6 Mac
+        "2-6": "Nuzul Al-Quran", 
         "2-21": "Hari Raya Aidilfitri", "2-22": "Aidilfitri Hari Kedua",
         "4-27": "Hari Raya Aidiladha", "4-31": "Hari Wesak",
-        "5-16": "Awal Muharram", // 16 Jun
-        "7-25": "Maulidur Rasul", // 25 Ogos
+        
+        // UPDATE: Awal Muharram 17 Jun (Bulan 5 = Jun)
+        "5-17": "Awal Muharram", 
+        
+        "5-1": "Keputeraan YDPA Agong",
+        "7-25": "Maulidur Rasul", 
         "10-8": "Deepavali", "0-17": "Israk Mikraj", "1-1": "Thaipusam"
     },
     "2027": {
         "1-6": "Tahun Baru Cina", "1-7": "TBC Hari Kedua",
-        "1-24": "Nuzul Al-Quran", // 24 Feb
+        "1-24": "Nuzul Al-Quran", 
         "2-10": "Hari Raya Aidilfitri", "2-11": "Aidilfitri Hari Kedua",
         "4-16": "Hari Raya Aidiladha", 
-        "5-6": "Awal Muharram", // 6 Jun
-        "7-15": "Maulidur Rasul", // 15 Ogos
+        "5-6": "Awal Muharram", 
+        "7-15": "Maulidur Rasul", 
         "9-29": "Deepavali"
     },
     "2028": {
         "0-26": "Tahun Baru Cina", "0-27": "TBC Hari Kedua",
-        "1-13": "Nuzul Al-Quran", // 13 Feb
+        "1-13": "Nuzul Al-Quran", 
         "1-27": "Hari Raya Aidilfitri", "1-28": "Aidilfitri Hari Kedua",
         "4-5": "Hari Raya Aidiladha", 
-        "4-25": "Awal Muharram", // 25 Mei
-        "7-3": "Maulidur Rasul", // 3 Ogos
+        "4-25": "Awal Muharram", 
+        "7-3": "Maulidur Rasul", 
         "9-17": "Deepavali"
     },
     "2029": {
-        "1-1": "Nuzul Al-Quran", // 1 Feb
+        "1-1": "Nuzul Al-Quran", 
         "1-13": "Tahun Baru Cina", "1-14": "TBC Hari Kedua",
         "1-15": "Hari Raya Aidilfitri", "1-16": "Aidilfitri Hari Kedua",
         "3-24": "Hari Raya Aidiladha", 
-        "4-14": "Awal Muharram", // 14 Mei
-        "6-23": "Maulidur Rasul", // 23 Julai
+        "4-14": "Awal Muharram", 
+        "6-23": "Maulidur Rasul", 
         "10-5": "Deepavali"
     },
     "2030": {
-        "0-21": "Nuzul Al-Quran", // 21 Jan
+        "0-21": "Nuzul Al-Quran", 
         "1-3": "Tahun Baru Cina", "1-4": "TBC Hari Kedua",
         "1-4": "Hari Raya Aidilfitri", "1-5": "Aidilfitri Hari Kedua",
         "3-13": "Hari Raya Aidiladha", 
-        "4-4": "Awal Muharram", // 4 Mei
-        "6-12": "Maulidur Rasul", // 12 Julai
+        "4-4": "Awal Muharram", 
+        "6-12": "Maulidur Rasul", 
         "9-26": "Deepavali"
     }
 };
@@ -112,9 +116,9 @@ const dynamicImageMap = {
     "Tahun Baru Cina": "cny.png", "TBC Hari Kedua": "cny.png",
     "Hari Raya Aidilfitri": "raya.png", "Aidilfitri Hari Kedua": "raya.png",
     "Hari Raya Aidiladha": "haji.png", "Deepavali": "deepavali.png",
-    "Awal Muharram": "awalmuharram.png", // Kalau ada gambar ni
-    "Maulidur Rasul": "maulid.png",      // Kalau ada gambar ni
-    "Nuzul Al-Quran": "nuzul.png"        // Kalau ada gambar ni
+    "Awal Muharram": "awalmuharram.png", 
+    "Maulidur Rasul": "maulid.png",      
+    "Nuzul Al-Quran": "nuzul.png"        
 };
 
 // E. DATA CUTI SEKOLAH (2025 & 2026)

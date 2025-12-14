@@ -1,34 +1,32 @@
 // =================================================================
 // 1. TETAPAN SISTEM
 // =================================================================
-let hijriAdjustment = -1; // -1: Malaysia (Biasanya), 0: Saudi
+let hijriAdjustment = -1; // -1: Malaysia, 0: Saudi
 
 // =================================================================
-// 2. DATA SINGKATAN BULAN ISLAM (UNTUK DALAM KOTAK TARIKH)
+// 2. DATA NAMA BULAN ISLAM (MANUAL FIX UNTUK PHONE)
 // =================================================================
-const hijriShortMap = {
-    "Muharram": "MUH",
-    "Safar": "SAF",
-    "Rabiulawal": "R.AWAL",
-    "Rabiulakhir": "R.AKHIR",
-    "Jamadilawal": "J.AWAL",
-    "Jamadilakhir": "J.AKHIR",
-    "Rejab": "REJ",
-    "Syaaban": "SYA",
-    "Ramadan": "RAM",
-    "Syawal": "SYAW",
-    "Zulkaedah": "Z.KAED",
-    "Zulhijjah": "Z.HIJJ"
-};
+// Kita guna array ini supaya tak bergantung pada browser phone yg kadang2 silap
+const hijriFullNames = [
+    "MUHARRAM", "SAFAR", "RABIULAWAL", "RABIULAKHIR",
+    "JAMADILAWAL", "JAMADILAKHIR", "REJAB", "SYAABAN",
+    "RAMADAN", "SYAWAL", "ZULKAEDAH", "ZULHIJJAH"
+];
+
+const hijriShortNames = [
+    "MUH", "SAF", "R.AWAL", "R.AKHIR",
+    "J.AWAL", "J.AKHIR", "REJ", "SYA",
+    "RAM", "SYAW", "Z.KAED", "Z.HIJJ"
+];
 
 // =================================================================
 // 3. DATA CUTI
 // =================================================================
 
-// A. CUTI TETAP (Berulang Setiap Tahun pada Tarikh Sama)
+// A. CUTI TETAP
 const fixedHolidays = {
     "0-1": "Tahun Baru", "0-14": "Keputeraan YDPB N9", "1-1": "Hari Wilayah",
-    "2-4": "Pertabalan Sultan Terengganu", "2-23": "Sultan Johor", 
+    "2-4": "Pertabalan Sultan Trg", "2-23": "Sultan Johor", 
     "3-15": "Bandaraya Melaka", "3-26": "Sultan Terengganu", "4-1": "Hari Pekerja",
     "4-17": "Raja Perlis", "4-30": "Pesta Kaamatan", "4-31": "Kaamatan (Ke-2)",
     "5-1": "Hari Gawai", "5-2": "Gawai (Ke-2)", "5-21": "Sultan Kedah",
@@ -37,8 +35,7 @@ const fixedHolidays = {
     "11-25": "Hari Krismas"
 };
 
-// B. CUTI BERGERAK (2025 - 2030)
-// Tarikh 2026 dikemaskini ikut Surat Siaran KPM [cite: 15]
+// B. CUTI BERGERAK (2025 - 2026)
 const dynamicHolidays = {
     "2025": {
         "0-29": "Tahun Baru Cina", "0-30": "TBC Hari Kedua",
@@ -50,36 +47,13 @@ const dynamicHolidays = {
         "8-9": "Maulidur Rasul", "9-20": "Deepavali"
     },
     "2026": {
-        // Tarikh Rasmi KPM [cite: 15]
         "1-17": "Tahun Baru Cina", "1-18": "TBC Hari Kedua",
         "2-21": "Hari Raya Aidilfitri", "2-22": "Aidilfitri Hari Kedua",
         "10-8": "Deepavali",
-        
-        // Anggaran / Kalendar Islam Lain
         "0-17": "Israk Mikraj", "1-1": "Thaipusam", 
         "4-27": "Hari Raya Aidiladha", "4-31": "Hari Wesak", 
         "5-1": "Keputeraan YDPA Agong", "5-16": "Awal Muharram", 
         "7-25": "Maulidur Rasul"
-    },
-    "2027": {
-        "1-6": "Tahun Baru Cina", "1-7": "TBC Hari Kedua",
-        "2-10": "Hari Raya Aidilfitri", "2-11": "Aidilfitri Hari Kedua",
-        "4-16": "Hari Raya Aidiladha", "9-29": "Deepavali"
-    },
-    "2028": {
-        "0-26": "Tahun Baru Cina", "0-27": "TBC Hari Kedua",
-        "1-27": "Hari Raya Aidilfitri", "1-28": "Aidilfitri Hari Kedua",
-        "4-5": "Hari Raya Aidiladha", "9-17": "Deepavali"
-    },
-    "2029": {
-        "1-13": "Tahun Baru Cina", "1-14": "TBC Hari Kedua",
-        "1-15": "Hari Raya Aidilfitri", "1-16": "Aidilfitri Hari Kedua",
-        "3-24": "Hari Raya Aidiladha", "10-5": "Deepavali"
-    },
-    "2030": {
-        "1-3": "Tahun Baru Cina", "1-4": "TBC Hari Kedua",
-        "1-4": "Hari Raya Aidilfitri", "1-5": "Aidilfitri Hari Kedua",
-        "3-13": "Hari Raya Aidiladha", "9-26": "Deepavali"
     }
 };
 
@@ -94,7 +68,7 @@ const holidayImages = {
     "10-11": "kelantan.png", "11-11": "selangor.png", "11-25": "christmas.png"
 };
 
-// D. GAMBAR PINTAR (CUTI BERGERAK)
+// D. GAMBAR PINTAR
 const dynamicImageMap = {
     "Tahun Baru Cina": "cny.png", "TBC Hari Kedua": "cny.png",
     "Hari Raya Aidilfitri": "raya.png", "Aidilfitri Hari Kedua": "raya.png",
@@ -102,7 +76,6 @@ const dynamicImageMap = {
 };
 
 // E. DATA CUTI SEKOLAH (2025 & 2026)
-// Data 2026 gabungan Kumpulan A & B [cite: 5, 11]
 const schoolHolidayData = {
     "2025": [
         { m: 0, start: 18, end: 31 }, { m: 1, start: 1, end: 16 },  
@@ -110,13 +83,9 @@ const schoolHolidayData = {
         { m: 8, start: 13, end: 21 }, { m: 11, start: 20, end: 31 } 
     ],
     "2026": [
-        // Cuti Penggal 1: Mac 20 - Mac 29 [cite: 5, 11]
         { m: 2, start: 20, end: 29 },
-        // Cuti Pertengahan Tahun: Mei 22 - Jun 7 [cite: 5, 11]
         { m: 4, start: 22, end: 31 }, { m: 5, start: 1, end: 7 },
-        // Cuti Penggal 2: Ogos 28 - Sept 6 [cite: 5, 11]
         { m: 7, start: 28, end: 31 }, { m: 8, start: 1, end: 6 },
-        // Cuti Akhir Tahun: Dis 4 - Dis 31 [cite: 5, 11]
         { m: 11, start: 4, end: 31 }
     ]
 };
@@ -127,11 +96,16 @@ const monthNames = [
 ];
 
 // =================================================================
-// 4. FORMATTER & HELPERS
+// 4. FORMATTER & HELPERS (UPDATED)
 // =================================================================
 
-const hijriHeaderFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura', {
-    day: 'numeric', month: 'long', year: 'numeric'
+// Kita minta NOMBOR bulan je dari browser, bukan nama.
+// 'nu-latn' pastikan keluar nombor 1,2,3 (bukan nombor arab timur)
+const hijriMonthNumFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura-nu-latn', {
+    month: 'numeric'
+});
+const hijriYearFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura-nu-latn', {
+    year: 'numeric'
 });
 const hijriDayFormatter = new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura-nu-latn', {
     day: 'numeric'
@@ -141,36 +115,36 @@ const todayDate = new Date();
 let currentMonth = todayDate.getMonth();
 let currentYear = todayDate.getFullYear();
 
-// FUNGSI HEADER: NAMA PENUH (JAMADILAKHIR - REJAB 1447H)
+// FUNGSI HEADER: NAMA PENUH (MANUAL ARRAY)
 function getHijriHeaderFull(month, year) {
     const dateStart = new Date(year, month, 1 + hijriAdjustment);
     const dateEnd = new Date(year, month, 28 + hijriAdjustment);
     
     try {
-        const partsStart = hijriHeaderFormatter.formatToParts(dateStart);
-        const partsEnd = hijriHeaderFormatter.formatToParts(dateEnd);
-        
-        const mStart = partsStart.find(p => p.type === 'month').value.toUpperCase();
-        const mEnd = partsEnd.find(p => p.type === 'month').value.toUpperCase();
-        const hYear = partsStart.find(p => p.type === 'year').value;
+        // Dapatkan Index Bulan (Browser bagi 1-12, Array kita 0-11, so tolak 1)
+        const mStartIdx = parseInt(hijriMonthNumFormatter.format(dateStart)) - 1;
+        const mEndIdx = parseInt(hijriMonthNumFormatter.format(dateEnd)) - 1;
+        const hYear = hijriYearFormatter.format(dateStart).replace('AH', '').trim();
 
-        if (mStart === mEnd) return `${mStart} ${hYear}H`;
-        return `${mStart} - ${mEnd} ${hYear}H`;
+        const nameStart = hijriFullNames[mStartIdx];
+        const nameEnd = hijriFullNames[mEndIdx];
+
+        if (nameStart === nameEnd) return `${nameStart} ${hYear}H`;
+        return `${nameStart} - ${nameEnd} ${hYear}H`;
     } catch (e) { return "HIJRI"; }
 }
 
-// FUNGSI KOTAK TARIKH: NOMBOR + SHORTFORM (Contoh: "1 REJ")
+// FUNGSI KOTAK TARIKH: NOMBOR + SHORTFORM (MANUAL ARRAY)
 function getHijriDayText(day, month, year) {
     try {
         const date = new Date(year, month, day + hijriAdjustment);
-        const parts = hijriHeaderFormatter.formatToParts(date);
-        const longMonth = parts.find(p => p.type === 'month').value;
-        const hDay = parts.find(p => p.type === 'day').value;
-
-        // Tukar jadi Shortform guna Map
-        const shortMonth = hijriShortMap[longMonth] || longMonth.substring(0,3).toUpperCase();
         
-        return `${hDay} ${shortMonth}`; 
+        const hDay = hijriDayFormatter.format(date);
+        const mIdx = parseInt(hijriMonthNumFormatter.format(date)) - 1;
+        
+        const shortName = hijriShortNames[mIdx];
+        
+        return `${hDay} ${shortName}`; 
     } catch (e) { return ""; }
 }
 

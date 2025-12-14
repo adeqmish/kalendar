@@ -14,7 +14,6 @@
 body {
     background-color: var(--bg-app);
     font-family: 'Poppins', sans-serif;
-    /* PENTING: Kurangkan padding tepi supaya kalendar muat lebih besar di skrin HP */
     padding: 20px 5px; 
     color: var(--text-main);
     display: flex; justify-content: center;
@@ -23,7 +22,7 @@ body {
 
 .app-wrapper { 
     width: 100%; 
-    max-width: 500px; /* Lebarkan sikit max-width */
+    max-width: 500px; 
 }
 
 /* --- 2. HEADER APLIKASI --- */
@@ -44,11 +43,10 @@ body {
 }
 .today-btn:active { background: var(--biru); color: white; }
 
-/* --- 3. KAD KALENDAR (RUANG DIMAKSIMUMKAN) --- */
+/* --- 3. KAD KALENDAR --- */
 .calendar-card {
     background: var(--card-bg);
     border-radius: 20px; 
-    /* PENTING: Padding dikurangkan ke 10px (sebelum ni 20px) supaya grid lebih luas */
     padding: 10px;
     box-shadow: var(--shadow-soft);
     margin-bottom: 20px;
@@ -76,14 +74,14 @@ body {
 }
 .nav-btn:hover { background: #e2e6ea; }
 
-/* --- 5. GRID HARI (AHAD - ISNIN...) --- */
+/* --- 5. GRID HARI --- */
 .days-header { 
     display: grid; grid-template-columns: repeat(7, 1fr); 
     margin-bottom: 5px;
 }
 .day-name { 
     text-align: center; 
-    font-size: 9px; /* Kekal kecil supaya nama hari penuh muat */
+    font-size: 9px; 
     font-weight: 800; 
     color: #b2bec3; 
     letter-spacing: 0.5px;
@@ -92,10 +90,9 @@ body {
 .day-name.sunday { color: var(--merah); }
 .day-name.saturday { color: var(--biru); }
 
-/* --- 6. GRID TARIKH (RAPATKAN GAP) --- */
+/* --- 6. GRID TARIKH --- */
 .calendar-grid { 
     display: grid; grid-template-columns: repeat(7, 1fr); 
-    /* PENTING: Gap dikurangkan ke 4px supaya kotak boleh jadi lebih besar */
     gap: 4px; 
 }
 
@@ -103,7 +100,7 @@ body {
 .date-box {
     aspect-ratio: 1/1;
     background: #ffffff;
-    border-radius: 12px; /* Radius bucu dikurangkan sikit supaya nampak luas */
+    border-radius: 12px; 
     box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
     border: 1px solid #f1f2f6;
     position: relative; 
@@ -112,20 +109,31 @@ body {
 }
 .date-box:active { transform: scale(0.95); }
 
-/* --- 7. SUSUN ATUR DALAM KOTAK --- */
+/* --- 7. SUSUN ATUR DALAM KOTAK (DIKEMASKINI) --- */
 
-/* A. Nombor Masihi (Kiri Atas - Rapat ke tepi) */
+/* A. Nombor Masihi (DEFAULT: BESAR & TENGAH) */
 .date-number { 
-    font-size: 12px; font-weight: 700; 
-    position: absolute; top: 3px; left: 4px;
-    z-index: 10; color: var(--text-main);
+    font-size: 20px; /* Saiz Besar */
+    font-weight: 800; 
+    position: absolute; 
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%); /* Center */
+    z-index: 10; 
+    color: var(--text-main);
     line-height: 1;
 }
 
-/* B. Nombor Hijrah (Kanan Bawah - Rapat ke tepi) */
+/* B. Nombor Masihi (KALAU ADA GAMBAR: KECIL & KIRI ATAS) */
+.has-image .date-number {
+    font-size: 12px;
+    top: 3px; left: 4px;
+    transform: none; /* Batalkan center */
+}
+
+/* C. Nombor Hijrah (Kanan Bawah - Kekal) */
 .hijri-number {
     position: absolute; bottom: 2px; right: 3px;
-    font-size: 8px; /* Kecilkan sikit supaya tak ganggu gambar */
+    font-size: 8px; 
     font-weight: 700;
     color: #95a5a6; 
     z-index: 10; 
@@ -135,9 +143,9 @@ body {
     letter-spacing: -0.5px;
 }
 
-/* C. Gambar Kuda/Cuti (Besar di Tengah) */
+/* D. Gambar (Besar di Tengah) */
 .horse-icon-grid {
-    width: 80%; /* Besarkan sikit lagi imej (dulu 75%) */
+    width: 80%; 
     height: auto;
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -145,7 +153,7 @@ body {
     z-index: 1; pointer-events: none;
 }
 
-/* D. Dot Cuti (Kanan Atas) */
+/* E. Dot Cuti (Kanan Atas) */
 .holiday-dot {
     width: 4px; height: 4px; background-color: var(--merah);
     border-radius: 50%; 
@@ -178,7 +186,7 @@ body {
 /* --- 9. NOTES & FOOTER --- */
 .notes-card { 
     background: var(--card-bg); border-radius: 20px; padding: 15px; 
-    box-shadow: var(--shadow-soft); margin: 0 5px; /* Rapatkan margin tepi */
+    box-shadow: var(--shadow-soft); margin: 0 5px; 
 }
 .notes-card h3 { 
     font-size: 14px; font-weight: 700; margin-bottom: 10px; 

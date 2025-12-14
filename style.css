@@ -1,12 +1,12 @@
 /* --- 1. SETTING ASAS & WARNA MODERN --- */
 :root {
-    --bg-app: #f0f2f5;       
-    --card-bg: #ffffff;      
-    --text-main: #2d3436;    
-    --merah: #ff4757;        
-    --kuning-kuda: #fff9c4;  
-    --biru: #1e90ff;         
-    --shadow-soft: 0 4px 12px rgba(0,0,0,0.05); 
+    --bg-app: #f0f2f5;       /* Latar belakang kelabu cair */
+    --card-bg: #ffffff;      /* Kad Putih */
+    --text-main: #2d3436;    /* Hitam pudar */
+    --merah: #ff4757;        /* Merah moden (Cuti/Ahad) */
+    --kuning-kuda: #fff9c4;  /* Kuning pastel (Cuti Sekolah) */
+    --biru: #1e90ff;         /* Biru terang (Sabtu/Hari Ini) */
+    --shadow-soft: 0 4px 12px rgba(0,0,0,0.05); /* Bayang lembut */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -14,124 +14,225 @@
 body {
     background-color: var(--bg-app);
     font-family: 'Poppins', sans-serif;
-    padding: 30px 15px;
+    /* PENTING: Kurangkan padding tepi supaya kalendar muat lebih besar di skrin HP */
+    padding: 20px 5px; 
     color: var(--text-main);
     display: flex; justify-content: center;
     min-height: 100vh;
 }
 
-.app-wrapper { width: 100%; max-width: 420px; }
+.app-wrapper { 
+    width: 100%; 
+    max-width: 500px; /* Lebarkan sikit max-width */
+}
 
-/* --- 2. HEADER --- */
-.app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.app-header h2 { font-size: 22px; font-weight: 700; color: #2d3436; margin: 0; }
-.app-logo { width: 40px; height: auto; }
+/* --- 2. HEADER APLIKASI --- */
+.app-header { 
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 15px; padding: 0 10px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.app-header h2 { font-size: 20px; font-weight: 700; color: #2d3436; margin: 0; }
+.app-logo { width: 35px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+
 .today-btn {
-    background: white; color: var(--biru); border: 1px solid var(--biru); 
-    padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer;
+    background: white; color: var(--biru); 
+    border: 1px solid var(--biru); 
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
 }
+.today-btn:active { background: var(--biru); color: white; }
 
-/* --- 3. KAD KALENDAR (CLEAN) --- */
+/* --- 3. KAD KALENDAR (RUANG DIMAKSIMUMKAN) --- */
 .calendar-card {
-    background: var(--card-bg); border-radius: 24px; padding: 20px;
-    box-shadow: var(--shadow-soft); margin-bottom: 25px; border: 1px solid #fff;
+    background: var(--card-bg);
+    border-radius: 20px; 
+    /* PENTING: Padding dikurangkan ke 10px (sebelum ni 20px) supaya grid lebih luas */
+    padding: 10px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 20px;
+    border: 1px solid #fff;
 }
 
-/* NAVIGASI */
-.month-control { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+/* --- 4. NAVIGASI BULAN --- */
+.month-control { 
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 15px;
+}
 .header-text { text-align: center; }
-.month-name { font-size: 22px; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+.month-name { font-size: 20px; font-weight: 800; color: var(--text-main); line-height: 1.1; }
 .hijri-badge {
-    background-color: #f1f2f6; color: #636e72; padding: 4px 10px; 
-    border-radius: 12px; font-size: 10px; font-weight: 600; margin-top: 5px; display: inline-block;
-}
-.nav-btn {
-    width: 40px; height: 40px; border-radius: 50%; border: none;
-    background: #f1f2f6; color: var(--text-main); font-size: 18px; 
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    background-color: #f1f2f6; color: #636e72;
+    padding: 3px 8px; border-radius: 10px;
+    font-size: 9px; font-weight: 600; margin-top: 3px; display: inline-block;
 }
 
-/* --- 4. GRID HARI --- */
-.days-header { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 10px; }
-.day-name { text-align: center; font-size: 11px; font-weight: 700; color: #b2bec3; }
+.nav-btn {
+    width: 35px; height: 35px; border-radius: 50%; border: none;
+    background: #f1f2f6; color: var(--text-main);
+    font-size: 16px; cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover { background: #e2e6ea; }
+
+/* --- 5. GRID HARI (AHAD - ISNIN...) --- */
+.days-header { 
+    display: grid; grid-template-columns: repeat(7, 1fr); 
+    margin-bottom: 5px;
+}
+.day-name { 
+    text-align: center; 
+    font-size: 9px; /* Kekal kecil supaya nama hari penuh muat */
+    font-weight: 800; 
+    color: #b2bec3; 
+    letter-spacing: 0.5px;
+    padding: 5px 0;
+}
 .day-name.sunday { color: var(--merah); }
 .day-name.saturday { color: var(--biru); }
 
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+/* --- 6. GRID TARIKH (RAPATKAN GAP) --- */
+.calendar-grid { 
+    display: grid; grid-template-columns: repeat(7, 1fr); 
+    /* PENTING: Gap dikurangkan ke 4px supaya kotak boleh jadi lebih besar */
+    gap: 4px; 
+}
 
-/* --- 5. KOTAK TARIKH (MODERN) --- */
+/* KOTAK INDIVIDU */
 .date-box {
-    aspect-ratio: 1/1; background: #ffffff; border-radius: 16px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #f1f2f6;
-    position: relative; cursor: pointer; overflow: hidden;
+    aspect-ratio: 1/1;
+    background: #ffffff;
+    border-radius: 12px; /* Radius bucu dikurangkan sikit supaya nampak luas */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+    border: 1px solid #f1f2f6;
+    position: relative; 
+    cursor: pointer; overflow: hidden;
     transition: transform 0.1s;
 }
 .date-box:active { transform: scale(0.95); }
 
-/* SUSUN ATUR DALAM KOTAK */
+/* --- 7. SUSUN ATUR DALAM KOTAK --- */
+
+/* A. Nombor Masihi (Kiri Atas - Rapat ke tepi) */
 .date-number { 
-    font-size: 13px; font-weight: 700; position: absolute; top: 4px; left: 6px;
+    font-size: 12px; font-weight: 700; 
+    position: absolute; top: 3px; left: 4px;
     z-index: 10; color: var(--text-main);
-}
-.horse-icon-grid {
-    width: 75%; height: auto; position: absolute; top: 55%; left: 50%;
-    transform: translate(-50%, -50%); opacity: 0.85; z-index: 1; pointer-events: none;
-}
-.holiday-dot {
-    width: 5px; height: 5px; background-color: var(--merah);
-    border-radius: 50%; position: absolute; top: 8px; right: 6px; z-index: 11;
+    line-height: 1;
 }
 
-/* WARNA & LOGIC */
+/* B. Nombor Hijrah (Kanan Bawah - Rapat ke tepi) */
+.hijri-number {
+    position: absolute; bottom: 2px; right: 3px;
+    font-size: 8px; /* Kecilkan sikit supaya tak ganggu gambar */
+    font-weight: 700;
+    color: #95a5a6; 
+    z-index: 10; 
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap; 
+    letter-spacing: -0.5px;
+}
+
+/* C. Gambar Kuda/Cuti (Besar di Tengah) */
+.horse-icon-grid {
+    width: 80%; /* Besarkan sikit lagi imej (dulu 75%) */
+    height: auto;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9; 
+    z-index: 1; pointer-events: none;
+}
+
+/* D. Dot Cuti (Kanan Atas) */
+.holiday-dot {
+    width: 4px; height: 4px; background-color: var(--merah);
+    border-radius: 50%; 
+    position: absolute; top: 4px; right: 4px; 
+    z-index: 11;
+}
+
+/* --- 8. LOGIC WARNA --- */
 .is-school-holiday { background-color: var(--kuning-kuda) !important; border-color: #fff176; }
+
 .is-holiday .date-number { color: var(--merah); }
-.is-holiday:not(.is-school-holiday) { background-color: #fff0f1; border-color: #ffccd5; }
+.is-holiday .hijri-number { color: var(--merah); opacity: 0.8; }
+.is-holiday:not(.is-school-holiday) { 
+    background-color: #fff0f1; border-color: #ffccd5; 
+}
+
 .is-saturday .date-number { color: var(--biru); }
 .day-sunday .date-number { color: var(--merah); }
 
-/* HIGHLIGHT HARI INI (MODERN) */
+/* --- HARI INI (MODERN HIGHLIGHT) --- */
 .is-today {
-    background-color: #ffffff !important;
-    border: 2px solid var(--biru) !important;
-    box-shadow: 0 4px 15px rgba(30, 144, 255, 0.3) !important;
+    background-color: #ffffff !important; 
+    border: 2px solid var(--biru) !important; 
+    box-shadow: 0 4px 12px rgba(30, 144, 255, 0.25) !important; 
     transform: scale(1.05); z-index: 20;
 }
-.is-today .date-number { color: var(--biru) !important; font-weight: 900; }
+.is-today .date-number, .is-today .hijri-number { color: var(--biru) !important; font-weight: 800; }
 .is-today .horse-icon-grid { filter: none; opacity: 1; }
 
-/* --- 6. NOTES CARD --- */
-.notes-card { background: var(--card-bg); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-soft); }
-.notes-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 15px; }
-.holiday-list { list-style: none; }
-.holiday-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f2f6; }
-.date-pill { 
-    background-color: #fff0f1; color: var(--merah); padding: 5px 10px; 
-    border-radius: 8px; font-size: 11px; font-weight: 700; margin-right: 12px; min-width: 55px; text-align: center; 
+/* --- 9. NOTES & FOOTER --- */
+.notes-card { 
+    background: var(--card-bg); border-radius: 20px; padding: 15px; 
+    box-shadow: var(--shadow-soft); margin: 0 5px; /* Rapatkan margin tepi */
 }
-.holiday-name { font-size: 13px; font-weight: 500; color: #2d3436; }
-.footer { text-align: center; margin-top: 30px; font-size: 11px; color: #b2bec3; }
+.notes-card h3 { 
+    font-size: 14px; font-weight: 700; margin-bottom: 10px; 
+    color: var(--text-main); display: flex; align-items: center; gap: 8px;
+}
+.holiday-list { list-style: none; }
+.holiday-item { 
+    display: flex; align-items: center; padding: 10px 0; 
+    border-bottom: 1px solid #f1f2f6; 
+}
+.date-pill { 
+    background-color: #fff0f1; color: var(--merah); 
+    padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; 
+    margin-right: 10px; min-width: 50px; text-align: center; 
+}
+.holiday-name { font-size: 12px; font-weight: 500; color: #2d3436; }
+.footer { 
+    text-align: center; margin-top: 20px; 
+    font-size: 10px; color: #b2bec3; 
+}
 
-/* --- 7. CUSTOM POPUP CSS --- */
+/* --- 10. CUSTOM POPUP (ANIMATED) --- */
 .popup-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px);
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    backdrop-filter: blur(5px); 
     display: flex; justify-content: center; align-items: center;
-    z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    z-index: 9999;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 .popup-overlay.active { opacity: 1; pointer-events: all; }
+
 .popup-content {
-    background: white; width: 85%; max-width: 320px; padding: 25px;
-    border-radius: 20px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white; width: 85%; max-width: 320px;
+    padding: 25px; border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .popup-overlay.active .popup-content { transform: scale(1); }
+
 .popup-icon { font-size: 40px; margin-bottom: 10px; }
 #popup-title { font-size: 18px; font-weight: 800; color: #2d3436; margin-bottom: 8px; }
-#popup-message { font-size: 14px; color: #636e72; line-height: 1.5; margin-bottom: 20px; }
+#popup-message { font-size: 14px; color: #636e72; line-height: 1.5; margin-bottom: 20px; white-space: pre-line; }
+
 .popup-close-btn {
-    background: #1e90ff; color: white; border: none; padding: 12px 25px;
-    border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%;
-    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.3); transition: transform 0.2s;
+    background: #1e90ff; color: white;
+    border: none; padding: 10px 25px;
+    border-radius: 30px; font-size: 14px; font-weight: 700;
+    cursor: pointer; width: 100%;
+    box-shadow: 0 5px 15px rgba(30, 144, 255, 0.3);
+    transition: transform 0.2s;
 }
 .popup-close-btn:active { transform: scale(0.95); }
